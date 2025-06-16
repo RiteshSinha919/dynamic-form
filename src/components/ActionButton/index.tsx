@@ -12,7 +12,7 @@ interface ActionButtonProps
 const ActionButton: React.FC<ActionButtonProps> = ({ buttonText, ...rest }) => {
   return (
     <StyledActionButtonContainer>
-      <StyledActionButton onClick={rest.onPress} {...rest}>
+      <StyledActionButton onClick={rest.onClick} {...rest}>
         {buttonText}
       </StyledActionButton>
     </StyledActionButtonContainer>

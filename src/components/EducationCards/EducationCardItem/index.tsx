@@ -23,7 +23,7 @@ const EducationCardItem: React.FC<EducationCardItemProps> = ({
   degree,
   errors,
 }) => {
-  const handleChange =
+  const onChange =
     (field: "institute" | "degree") =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
       formStore.updateFormRecord(id, field, event.target.value);
@@ -39,14 +39,14 @@ const EducationCardItem: React.FC<EducationCardItemProps> = ({
       <InputField
         inputLabel="Institute Name"
         errorMessage={errors?.institute}
-        value={institute}
-        onChange={handleChange("institute")}
+        inputValue={institute}
+        onChange={onChange("institute")}
       />
       <InputField
         inputLabel="Degree"
         errorMessage={errors?.degree}
-        value={degree}
-        onChange={handleChange("degree")}
+        inputValue={degree}
+        onChange={onChange("degree")}
       />
     </StyledEducationCardItemContainer>
   );

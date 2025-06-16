@@ -9,7 +9,7 @@ import {
 interface InputFieldProps {
   inputLabel: string;
   inputValue: string;
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   errorMessage?: string;
 }
 

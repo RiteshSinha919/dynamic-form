@@ -27,7 +27,7 @@ const EducationCards: React.FC = observer(() => {
       </EducationCardWrapper>
       <ActionButton
         buttonText="+ Add"
-        onPress={() => formStore.addFormRecord()}
+        onClick={() => formStore.addFormRecord()}
       />
     </StyledEducationCardsContainer>
   );

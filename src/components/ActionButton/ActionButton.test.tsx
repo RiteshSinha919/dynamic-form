@@ -10,7 +10,7 @@ describe("testing action button component", () => {
   });
 
   it("render with proper button text", () => {
-    render(<ActionButton buttonText="Add" onPress={mockOnClickFunct} />);
+    render(<ActionButton buttonText="Add" onClick={mockOnClickFunct} />);
 
     const buttonElement = screen.getByRole("button");
 
@@ -19,7 +19,7 @@ describe("testing action button component", () => {
   });
 
   it("working action button click", () => {
-    render(<ActionButton buttonText="Add" onPress={mockOnClickFunct} />);
+    render(<ActionButton buttonText="Add" onClick={mockOnClickFunct} />);
     const buttonElement = screen.getByRole("button");
 
     fireEvent.click(buttonElement);

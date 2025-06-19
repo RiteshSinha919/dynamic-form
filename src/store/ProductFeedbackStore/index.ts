@@ -1,12 +1,14 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { ProductFeedbackType } from "../../types/ProductFeedbackType";
+import { v4 as uuidv4 } from "uuid";
 
 class ProductFeedbackStore {
   productFeedbackData: ProductFeedbackType;
+  showSuccessMessage: boolean;
 
   constructor() {
     this.productFeedbackData = {
-      id: "",
+      id: uuidv4(),
       name: "",
       email: "",
       feedback: "",
@@ -15,10 +17,18 @@ class ProductFeedbackStore {
         email: "",
       },
     };
+    this.showSuccessMessage = false;
     makeAutoObservable(this);
   }
 
-  validateFeedbackData() {
+  setFeedbackData = (field: string, value: string) => {
+    this.productFeedbackData[field] = value;
+    if (field in this.productFeedbackData.errors) {
+      this.productFeedbackData.errors[field] = "";
+    }
+  };
+
+  validateFeedbackData = () => {
     const emialReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (this.productFeedbackData.email) {
       if (!emialReg.test(this.productFeedbackData.email)) {
@@ -31,26 +41,29 @@ class ProductFeedbackStore {
     if (!this.productFeedbackData.name) {
       this.productFeedbackData.errors.name = "Name is required";
     }
+  };
 
-    runInAction(() => {
-      delete this.productFeedbackData.errors.email;
-      delete this.productFeedbackData.errors.name;
-    });
+  onSuccess() {
+    this.showSuccessMessage = true;
+    setTimeout(() => {
+      this.showSuccessMessage = false;
+    }, 3000);
   }
 
-  submitFeedback() {
+  submitFeedback = () => {
     this.validateFeedbackData();
     if (
       !this.productFeedbackData.errors.email &&
       !this.productFeedbackData.errors.name
     ) {
       this.resetFeedbackData();
+      this.onSuccess();
     }
-  }
+  };
 
   resetFeedbackData() {
     this.productFeedbackData = {
-      id: "",
+      id: uuidv4(),
       name: "",
       email: "",
       feedback: "",
@@ -61,3 +74,6 @@ class ProductFeedbackStore {
     };
   }
 }
+
+const productFeedbackStore = new ProductFeedbackStore();
+export default productFeedbackStore;

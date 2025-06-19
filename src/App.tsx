@@ -1,18 +1,20 @@
 import React from "react";
-import FormRoute from "./routes/FormRoute";
-import { AppContainer } from "./styledApp";
-import TableRoute from "./routes/TableRoute";
+import { AppContainer, InnerContainer } from "./styledApp";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ExperienceCards from "./components/ExperienceCards";
+import ProductFeedback from "./components/ProductFeedback";
 
 const App: React.FC = () => {
   return (
     <AppContainer>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/p1" element={<ExperienceCards />} />
-        </Routes>
-      </BrowserRouter>
+      <InnerContainer>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/p1" element={<ExperienceCards />} />
+            <Route path="/p2" element={<ProductFeedback />} />
+          </Routes>
+        </BrowserRouter>
+      </InnerContainer>
     </AppContainer>
   );
 };

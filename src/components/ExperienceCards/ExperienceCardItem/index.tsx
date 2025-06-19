@@ -18,7 +18,6 @@ const ExperienceCardItem: React.FC<EmployeExperienceType> = ({
         event.target.value
       );
     };
-  console.log(employeExperienceDataStore.employeExperienceData);
   return (
     <>
       <InputField

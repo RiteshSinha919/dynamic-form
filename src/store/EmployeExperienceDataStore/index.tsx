@@ -11,17 +11,19 @@ class EmployeExperienceDataStore {
   }
 
   addExperienceData() {
-    const isError = this.employeExperienceData.find(
-      (item) => item.companyNameError
+    const erroredField = this.employeExperienceData.find(
+      (item) => !item.companyName
     );
 
-    if (!isError) {
+    if (!erroredField) {
       this.employeExperienceData.push({
         id: uuidv4(),
         companyName: "",
         jobTitle: "",
         companyNameError: "",
       });
+    } else {
+      this.validateExperienceData(erroredField);
     }
   }
 

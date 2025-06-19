@@ -3,7 +3,7 @@ export interface ProductFeedbackType {
   name: string;
   email: string;
   feedback?: string;
-  error: {
+  errors: {
     name?: string;
     email?: string;
   };

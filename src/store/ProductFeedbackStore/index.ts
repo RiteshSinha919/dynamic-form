@@ -10,7 +10,7 @@ class ProductFeedbackStore {
       name: "",
       email: "",
       feedback: "",
-      error: {
+      errors: {
         name: "",
         email: "",
       },
@@ -22,23 +22,42 @@ class ProductFeedbackStore {
     const emialReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (this.productFeedbackData.email) {
       if (!emialReg.test(this.productFeedbackData.email)) {
-        this.productFeedbackData.error.email = "Enter Correct Email";
+        this.productFeedbackData.errors.email = "Enter Correct Email";
       }
     } else {
-      this.productFeedbackData.error.email = "Email is required";
+      this.productFeedbackData.errors.email = "Email is required";
     }
 
     if (!this.productFeedbackData.name) {
-      this.productFeedbackData.error.name = "Name is required";
+      this.productFeedbackData.errors.name = "Name is required";
     }
 
     runInAction(() => {
-      delete this.productFeedbackData.error.email;
-      delete this.productFeedbackData.error.name;
+      delete this.productFeedbackData.errors.email;
+      delete this.productFeedbackData.errors.name;
     });
   }
 
   submitFeedback() {
-    
+    this.validateFeedbackData();
+    if (
+      !this.productFeedbackData.errors.email &&
+      !this.productFeedbackData.errors.name
+    ) {
+      this.resetFeedbackData();
+    }
+  }
+
+  resetFeedbackData() {
+    this.productFeedbackData = {
+      id: "",
+      name: "",
+      email: "",
+      feedback: "",
+      errors: {
+        name: "",
+        email: "",
+      },
+    };
   }
 }

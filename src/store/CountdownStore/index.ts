@@ -1,35 +1,44 @@
 import { makeObservable, observable } from "mobx";
 
 class CountdownStore {
-  fromTime: number;
-  countdownValue: number;
+  fromTime: number = 5;
+  countdownValue: number = this.fromTime;
+  countdownIntervalId: NodeJS.Timeout | undefined;
 
   constructor() {
-    this.fromTime = 0;
-    this.countdownValue = this.fromTime;
     makeObservable(this, {
       fromTime: observable,
       countdownValue: observable,
+      countdownIntervalId: observable,
     });
   }
 
   updateFromTime = (value: number) => {
     this.fromTime = value;
+    this.countdownValue = this.fromTime;
   };
 
   handleCountdown = () => {
-    setInterval(() => {
+    this.countdownIntervalId = setInterval(() => {
       if (this.countdownValue > 0) {
         this.countdownValue--;
       }
     }, 1000);
   };
 
-  startCountdown = () => {
-    this.handleCountdown();
+  playCountdown = () => {
+    if (this.fromTime && this.countdownValue > 0) this.handleCountdown();
   };
 
-  pause
+  pauseCountdown = () => {
+    clearInterval(this.countdownIntervalId);
+    this.countdownIntervalId = undefined;
+  };
+
+  resetCountdown = () => {
+    this.pauseCountdown();
+    this.countdownValue = this.fromTime;
+  };
 }
 
 const countdownStore = new CountdownStore();

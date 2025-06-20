@@ -5,6 +5,7 @@ import ExperienceCards from "./components/ExperienceCards";
 import ProductFeedback from "./components/ProductFeedback";
 import Counter from "./components/Counter";
 import Notes from "./components/Notes";
+import CountdownCard from "./components/CountdownCard";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const App: React.FC = () => {
             <Route path="/p2" element={<ProductFeedback />} />
             <Route path="/p3" element={<Counter />} />
             <Route path="/p4" element={<Notes />} />
+            <Route path="/p7" element={<CountdownCard />} />
           </Routes>
         </BrowserRouter>
       </InnerContainer>

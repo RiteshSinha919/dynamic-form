@@ -18,6 +18,13 @@ export const StyledInputField = styled.input`
   outline: none;
   padding: 8px;
   box-sizing: border-box;
+
+  &:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 `;
 
 export const StyledLabel = styled.label`

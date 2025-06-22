@@ -10,6 +10,7 @@ import VotingCard from "./components/VotingCard";
 import Accordion from "./components/Accordion";
 import TextGenerator from "./components/TextGenerator";
 import PollingCard from "./components/PollingCard";
+import MultiStepForm from "./components/MultiStepForm";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,7 @@ const App: React.FC = () => {
             <Route path="/p3" element={<Counter />} />
             <Route path="/p4" element={<Notes />} />
             <Route path="/p5" element={<PollingCard />} />
+            <Route path="/p6" element={<MultiStepForm />} />
             <Route path="/p7" element={<CountdownCard />} />
             <Route path="/p8" element={<VotingCard />} />
             <Route path="/p9" element={<Accordion />} />

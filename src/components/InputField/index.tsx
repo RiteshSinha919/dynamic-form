@@ -18,6 +18,7 @@ const InputField: React.FC<InputFieldProps> = ({
   errorMessage,
   inputValue,
   onChange,
+  ...rest
 }) => {
   return (
     <StyledInputFieldContainer>
@@ -26,6 +27,7 @@ const InputField: React.FC<InputFieldProps> = ({
         id={inputLabel}
         onChange={onChange}
         value={inputValue}
+        {...rest}
       />
       {errorMessage && <StyledErrorMessage>{errorMessage}</StyledErrorMessage>}
     </StyledInputFieldContainer>

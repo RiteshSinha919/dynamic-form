@@ -7,6 +7,8 @@ import Counter from "./components/Counter";
 import Notes from "./components/Notes";
 import CountdownCard from "./components/CountdownCard";
 import VotingCard from "./components/VotingCard";
+import Accordion from "./components/Accordion";
+import TextGenerator from "./components/TextGenerator";
 
 const App: React.FC = () => {
   return (
@@ -20,6 +22,8 @@ const App: React.FC = () => {
             <Route path="/p4" element={<Notes />} />
             <Route path="/p7" element={<CountdownCard />} />
             <Route path="/p8" element={<VotingCard />} />
+            <Route path="/p9" element={<Accordion />} />
+            <Route path="/p11" element={<TextGenerator />} />
           </Routes>
         </BrowserRouter>
       </InnerContainer>

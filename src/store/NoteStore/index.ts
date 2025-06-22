@@ -4,97 +4,120 @@ import { v4 as uuidv4 } from "uuid";
 
 class NoteStore {
   noteList: NoteType[] = [];
-  contentLength: number = 0;
-  currentEditingNoteId: string | null = null;
+  inputData: NoteType = {
+    id: "",
+    title: "",
+    content: "",
+    error: "",
+  };
   readonly MAX_CONTENT_LENGTH = 200;
+  private readonly STORAGE_KEY = "notes";
 
   constructor() {
     makeObservable(this, {
       noteList: observable,
-      contentLength: observable,
-      currentEditingNoteId: observable,
+      inputData: observable,
       addNewNote: action,
-      editNote: action,
+      updateNote: action,
       removeNote: action,
-      setCurrentEditingNoteId: action,
-      updateContentLength: action,
-      currentEditingNote: computed,
+      editNote: action,
+      clearInput: action,
+      saveNotesToStorage: action,
+      contentLength: computed,
     });
+
+    this.loadNotesFromStorage();
   }
 
-  get currentEditingNote() {
-    return (
-      this.noteList.find((note) => note.id === this.currentEditingNoteId) ||
-      null
-    );
+  get contentLength(): number {
+    return this.inputData.content.length;
   }
 
   addNewNote() {
+    if (!this.validateNote(this.inputData)) {
+      return;
+    }
+
     const newNote: NoteType = {
       id: uuidv4(),
-      title: "Untitled",
-      content: "",
+      title: this.inputData.title.trim(),
+      content: this.inputData.content.trim(),
     };
 
     this.noteList.push(newNote);
-    this.currentEditingNoteId = newNote.id;
-    this.updateContentLength(newNote.id);
+    this.saveNotesToStorage();
+    this.clearInput();
   }
 
-  editNote(field: string, value: string) {
-    if (this.currentEditingNoteId) {
-      const note = this.noteList.find(
-        (item) => item.id === this.currentEditingNoteId
-      );
-      if (note) {
-        if (field === "content" && value.length > this.MAX_CONTENT_LENGTH) {
-          return;
-        }
-        
-        note[field] = value;
+  updateNote(field: "title" | "content", value: string) {
+    if (field === "content" && value.length > this.MAX_CONTENT_LENGTH) {
+      return;
+    }
 
-        if (field === "content") {
-          this.updateContentLength(note.id);
-        }
+    this.inputData[field] = value;
 
-        if (note.error) {
-          note.error = undefined;
-        }
-      }
+    if (this.inputData.error) {
+      this.inputData.error = "";
+    }
+  }
+
+  editNote(id: string) {
+    const note = this.noteList.find((item) => item.id === id);
+    if (note) {
+      this.inputData = {
+        id: note.id,
+        title: note.title,
+        content: note.content,
+        error: "",
+      };
     }
   }
 
   removeNote(id: string) {
     this.noteList = this.noteList.filter((item) => item.id !== id);
+    this.saveNotesToStorage();
 
-    if (this.currentEditingNoteId === id) {
-      const newCurrentId =
-        this.noteList.length > 0 ? this.noteList[0].id : null;
-      this.setCurrentEditingNoteId(newCurrentId);
+    if (this.inputData.id === id) {
+      this.clearInput();
     }
   }
 
-  updateContentLength(id: string) {
-    const note = this.noteList.find((item) => item.id === id);
-    if (note) {
-      this.contentLength = note.content.length;
-    }
+  clearInput() {
+    this.inputData = {
+      id: "",
+      title: "",
+      content: "",
+      error: "",
+    };
   }
 
   validateNote(note: NoteType): boolean {
     if (!note.title.trim()) {
-      note.error = "Title is required";
+      this.inputData.error = "Title is required";
       return false;
     }
 
-    note.error = undefined;
+    this.inputData.error = "";
     return true;
   }
 
-  setCurrentEditingNoteId(id: string | null) {
-    this.currentEditingNoteId = id;
-    if (id) {
-      this.updateContentLength(id);
+  private loadNotesFromStorage() {
+    try {
+      const storedNotes = localStorage.getItem(this.STORAGE_KEY);
+      if (storedNotes) {
+        this.noteList = JSON.parse(storedNotes);
+      }
+    } catch (error) {
+      console.error("Error loading notes from localStorage:", error);
+      this.noteList = [];
+    }
+  }
+
+  saveNotesToStorage() {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.noteList));
+    } catch (error) {
+      console.error("Error saving notes to localStorage:", error);
     }
   }
 }

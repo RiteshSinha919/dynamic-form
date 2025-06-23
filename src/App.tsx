@@ -26,7 +26,7 @@ const App: React.FC = () => {
             <Route path="/p6" element={<MultiStepForm />} />
             <Route path="/p7" element={<CountdownCard />} />
             <Route path="/p8" element={<VotingCard />} />
-            <Route path="/p9" element={<Accordion />} />
+            <Route path="/p10" element={<Accordion />} />
             <Route path="/p11" element={<TextGenerator />} />
           </Routes>
         </BrowserRouter>

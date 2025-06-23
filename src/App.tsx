@@ -11,6 +11,7 @@ import Accordion from "./components/Accordion";
 import TextGenerator from "./components/TextGenerator";
 import PollingCard from "./components/PollingCard";
 import MultiStepForm from "./components/MultiStepForm";
+import TodoApp from "./components/TodoApp";
 
 const App: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path="/p6" element={<MultiStepForm />} />
             <Route path="/p7" element={<CountdownCard />} />
             <Route path="/p8" element={<VotingCard />} />
+            <Route path="/p9" element={<TodoApp />} />
             <Route path="/p10" element={<Accordion />} />
             <Route path="/p11" element={<TextGenerator />} />
           </Routes>

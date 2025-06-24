@@ -12,25 +12,37 @@ import TextGenerator from "./components/TextGenerator";
 import PollingCard from "./components/PollingCard";
 import MultiStepForm from "./components/MultiStepForm";
 import TodoApp from "./components/TodoApp";
+import { UserProfileProvider } from "./store/UserProfileContext";
+import ProfileOverview from "./components/ProfileOverview";
+import EditProfile from "./components/EditProfile";
+import Settings from "./components/Settings";
+import PageNotFound from "./components/PageNotFound";
 
 const App: React.FC = () => {
   return (
     <AppContainer>
       <InnerContainer>
         <BrowserRouter>
-          <Routes>
-            <Route path="/p1" element={<ExperienceCards />} />
-            <Route path="/p2" element={<ProductFeedback />} />
-            <Route path="/p3" element={<Counter />} />
-            <Route path="/p4" element={<Notes />} />
-            <Route path="/p5" element={<PollingCard />} />
-            <Route path="/p6" element={<MultiStepForm />} />
-            <Route path="/p7" element={<CountdownCard />} />
-            <Route path="/p8" element={<VotingCard />} />
-            <Route path="/p9" element={<TodoApp />} />
-            <Route path="/p10" element={<Accordion />} />
-            <Route path="/p11" element={<TextGenerator />} />
-          </Routes>
+          <UserProfileProvider children={undefined}>
+            <Routes>
+              <Route path="/p1" element={<ExperienceCards />} />
+              <Route path="/p2" element={<ProductFeedback />} />
+              <Route path="/p3" element={<Counter />} />
+              <Route path="/p4" element={<Notes />} />
+              <Route path="/p5" element={<PollingCard />} />
+              <Route path="/p6" element={<MultiStepForm />} />
+              <Route path="/p7" element={<CountdownCard />} />
+              <Route path="/p8" element={<VotingCard />} />
+              <Route path="/p9" element={<TodoApp />} />
+              <Route path="/p10" element={<Accordion />} />
+              <Route path="/p11" element={<TextGenerator />} />
+              <Route path="/p13" element={<ProfileOverview />} />
+              <Route path="/profile" element={<ProfileOverview />} />
+              <Route path="/profile/edit" element={<EditProfile />} />
+              <Route path="/profile/settings" element={<Settings />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </UserProfileProvider>
         </BrowserRouter>
       </InnerContainer>
     </AppContainer>

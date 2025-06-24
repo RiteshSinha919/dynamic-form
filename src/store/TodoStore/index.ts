@@ -7,6 +7,7 @@ interface TodoList {
   id: string;
   content: string;
   category: string;
+  completed?: boolean;
   error?: string;
 }
 
@@ -18,9 +19,11 @@ interface CategoryList {
 
 class TodoStore {
   todoList: TodoList[] = [];
+  filteredTodoList: TodoList[] = [];
   categoryList: CategoryList[] = [];
   filterCategory: string = "All";
   showAddNewCategory: boolean = false;
+  taskStatus: "pending" | "completed" = "pending";
   newCategory: CategoryList = {
     id: "",
     category: "",
@@ -40,24 +43,37 @@ class TodoStore {
       filterCategory: observable,
       newCategory: observable,
       newTodo: observable,
+      showAddNewCategory: observable,
+      taskStatus: observable,
+      filteredTodoList: observable,
+      toggleStatus: action,
       showAddCategory: action,
       updateTodo: action,
       updateCategory: action,
       addNewCategory: action,
       cancelAddCategory: action,
       addNewTodo: action,
-      validateInput: action,
+      validateCategory: action,
+      validateTodo: action,
       removeTodo: action,
       editTodo: action,
-      handleTodoFilter: action,
+      updateTodoFilter: action,
       resetNewCategory: action,
       resetNewTodo: action,
+      toggleTodoCompleted: action,
     });
+
+    this.categoryList.push({ id: uuidv4(), category: "All" });
+    this.categoryList.push({ id: uuidv4(), category: "Work" });
+    this.categoryList.push({ id: uuidv4(), category: "Personal" });
   }
+
+  toggleStatus = () => {
+    this.taskStatus = this.taskStatus === "pending" ? "completed" : "pending";
+  };
 
   updateTodo = (field: string, value: string) => {
     this.newTodo[field] = value;
-    this.validateInput();
   };
 
   showAddCategory = () => {
@@ -66,47 +82,62 @@ class TodoStore {
 
   updateCategory = (value: string) => {
     this.newCategory.category = value;
-    this.validateInput();
+    this.validateCategory();
   };
 
-  validateInput = () => {
+  validateCategory = () => {
     if (!this.newCategory.category) {
       this.newCategory.error = "Enter category";
       return false;
     }
+    this.newCategory.error = "";
+    return true;
+  };
+
+  validateTodo = () => {
     if (!this.newTodo.content) {
       this.newTodo.error = "Enter task to add";
       return false;
     }
-    this.newCategory.error = "";
     this.newTodo.error = "";
     return true;
   };
 
   addNewCategory = () => {
-    if (this.validateInput()) {
+    const item = this.categoryList.find(
+      (item) =>
+        item.category.toLowerCase() === this.newCategory.category.toLowerCase()
+    );
+    if (this.validateCategory() && !item) {
       const newItem: CategoryList = {
         id: uuidv4(),
         category: this.newCategory.category,
       };
       this.categoryList.push(newItem);
+      this.showAddNewCategory = false;
       this.resetNewCategory();
+    } else {
+      this.newCategory.error = "Category already exisit";
     }
   };
 
   cancelAddCategory = () => {
     this.showAddNewCategory = false;
+    this.resetNewCategory();
   };
 
   addNewTodo = () => {
-    if (this.validateInput()) {
+    if (this.validateTodo()) {
       const newItem = {
         id: uuidv4(),
         content: this.newTodo.content,
         category: this.newTodo.category,
+        completed: false,
       };
       this.todoList.push(newItem);
       this.resetNewTodo();
+    } else {
+      this.validateTodo();
     }
   };
 
@@ -120,8 +151,18 @@ class TodoStore {
     if (editItem) editItem[field] = value;
   };
 
-  handleTodoFilter = (value: string) => {
+  updateTodoFilter = (value: string) => {
     this.filterCategory = value;
+  };
+
+  handleTodoFilter = () => {
+    if (this.filterCategory === "All") {
+      this.filteredTodoList = this.todoList;
+      return;
+    }
+    this.filteredTodoList = this.todoList.filter(
+      (item) => item.category === this.filterCategory
+    );
   };
 
   resetNewCategory = () => {
@@ -139,6 +180,13 @@ class TodoStore {
       category: "",
       error: "",
     };
+  };
+
+  toggleTodoCompleted = (id: string) => {
+    const todo = this.todoList.find((item) => item.id === id);
+    if (todo) {
+      todo.completed = !todo.completed;
+    }
   };
 }
 

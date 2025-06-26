@@ -42,7 +42,7 @@ const App: React.FC = () => {
                 <Route path="/p9" element={<TodoApp />} />
                 <Route path="/p10" element={<Accordion />} />
                 <Route path="/p11" element={<TextGenerator />} />
-                <Route path="/p11" element={<Elevator />} />
+                <Route path="/p12" element={<Elevator />} />
                 <Route path="/p13" element={<ProfileOverview />} />
                 <Route path="/profile" element={<ProfileOverview />} />
                 <Route path="/profile/edit" element={<EditProfile />} />
